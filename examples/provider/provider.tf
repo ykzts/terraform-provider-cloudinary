@@ -1,3 +1,5 @@
-provider "scaffolding" {
-  # example configuration here
+provider "cloudinary" {
+  cloud_name = ""
+  api_key    = ""
+  api_secret = ""
 }
