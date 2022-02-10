@@ -8,6 +8,7 @@ on:
     paths-ignore:
       - 'README.md'
   push:
+    branches: [main]
     paths-ignore:
       - 'README.md'
 
@@ -60,5 +61,8 @@ jobs:
       - run: go mod download
       - env:
           TF_ACC: "1"
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
         run: go test -v -cover ./internal/provider/
         timeout-minutes: 10

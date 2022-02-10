@@ -3,7 +3,9 @@ package provider
 import (
 	"context"
 	"fmt"
+	"os"
 
+	"github.com/cloudinary/cloudinary-go"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
@@ -12,12 +14,7 @@ import (
 // provider satisfies the tfsdk.Provider interface and usually is included
 // with all Resource and DataSource implementations.
 type provider struct {
-	// client can contain the upstream provider SDK or HTTP client used to
-	// communicate with the upstream service. Resource and DataSource
-	// implementations can then make calls using this client.
-	//
-	// TODO: If appropriate, implement upstream provider SDK or HTTP client.
-	// client vendorsdk.ExampleClient
+	client *cloudinary.Cloudinary
 
 	// configured is set to true at the end of the Configure method.
 	// This can be used in Resource and DataSource implementations to verify
@@ -32,7 +29,9 @@ type provider struct {
 
 // providerData can be used to store data from the Terraform configuration.
 type providerData struct {
-	Example types.String `tfsdk:"example"`
+	APIKey    types.String `tfsdk:"api_key"`
+	APISecret types.String `tfsdk:"api_secret"`
+	CloudName types.String `tfsdk:"cloud_name"`
 }
 
 func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderRequest, resp *tfsdk.ConfigureProviderResponse) {
@@ -44,34 +43,126 @@ func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderReq
 		return
 	}
 
-	// Configuration values are now available.
-	// if data.Example.Null { /* ... */ }
+	var cloud string
+	if data.CloudName.Unknown {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as cloud_name",
+		)
+		return
+	}
 
-	// If the upstream provider SDK or HTTP client requires configuration, such
-	// as authentication or logging, this is a great opportunity to do so.
+	if data.CloudName.Null {
+		cloud = os.Getenv("CLOUDINARY_CLOUD_NAME")
+	} else {
+		cloud = data.CloudName.Value
+	}
 
+	if cloud == "" {
+		// Error vs warning - empty value must stop execution
+		resp.Diagnostics.AddError(
+			"Unable to find cloud_name",
+			"Cloud name cannot be an empty string",
+		)
+		return
+	}
+
+	var key string
+	if data.APIKey.Unknown {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as api_key",
+		)
+		return
+	}
+
+	if data.APIKey.Null {
+		key = os.Getenv("CLOUDINARY_API_KEY")
+	} else {
+		key = data.APIKey.Value
+	}
+
+	if key == "" {
+		// Error vs warning - empty value must stop execution
+		resp.Diagnostics.AddError(
+			"Unable to find api_key",
+			"API Key cannot be an empty string",
+		)
+		return
+	}
+
+	var secret string
+	if data.APISecret.Unknown {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as api_secret",
+		)
+		return
+	}
+
+	if data.APISecret.Null {
+		secret = os.Getenv("CLOUDINARY_API_SECRET")
+	} else {
+		secret = data.APISecret.Value
+	}
+
+	if secret == "" {
+		// Error vs warning - empty value must stop execution
+		resp.Diagnostics.AddError(
+			"Unable to find api_secret",
+			"API Secret cannot be an empty string",
+		)
+		return
+	}
+
+	c, err := cloudinary.NewFromParams(cloud, key, secret)
+	if err != nil {
+		resp.Diagnostics.AddError(
+			"Unable to create client",
+			"Unable to create cloudinary client:\n\n"+err.Error(),
+		)
+
+		return
+	}
+
+	p.client = c
 	p.configured = true
 }
 
 func (p *provider) GetResources(ctx context.Context) (map[string]tfsdk.ResourceType, diag.Diagnostics) {
 	return map[string]tfsdk.ResourceType{
-		"scaffolding_example": exampleResourceType{},
+		"cloudinary_admin_upload_mapping": adminUploadMappingResourceType{},
 	}, nil
 }
 
 func (p *provider) GetDataSources(ctx context.Context) (map[string]tfsdk.DataSourceType, diag.Diagnostics) {
 	return map[string]tfsdk.DataSourceType{
-		"scaffolding_example": exampleDataSourceType{},
+		"cloudinary_admin_upload_mapping": adminUploadMappingDataSourceType{},
 	}, nil
 }
 
 func (p *provider) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
 		Attributes: map[string]tfsdk.Attribute{
-			"example": {
-				MarkdownDescription: "Example provider attribute",
-				Optional:            true,
-				Type:                types.StringType,
+			"api_key": {
+				Computed:  true,
+				Optional:  true,
+				Sensitive: true,
+				Type:      types.StringType,
+			},
+			"api_secret": {
+				Computed:  true,
+				Optional:  true,
+				Sensitive: true,
+				Type:      types.StringType,
+			},
+			"cloud_name": {
+				Computed: true,
+				Optional: true,
+				Type:     types.StringType,
 			},
 		},
 	}, nil

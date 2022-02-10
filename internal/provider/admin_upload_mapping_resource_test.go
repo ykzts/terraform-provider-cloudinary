@@ -7,35 +7,43 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccExampleResource(t *testing.T) {
+func TestAccAdminUploadMappingResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccExampleResourceConfig("one"),
+				Config: testAccAdminUploadMappingResourceConfig("https://example.com/images/"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("scaffolding_example.test", "configurable_attribute", "one"),
-					resource.TestCheckResourceAttr("scaffolding_example.test", "id", "example-id"),
+					resource.TestCheckResourceAttr(
+						"cloudinary_admin_upload_mapping.test",
+						"template",
+						"https://example.com/images/",
+					),
+					resource.TestCheckResourceAttr("cloudinary_admin_upload_mapping.test", "folder", "example"),
 				),
 			},
 			// ImportState testing
 			{
-				ResourceName:      "scaffolding_example.test",
+				ResourceName:      "cloudinary_admin_upload_mapping.test",
 				ImportState:       true,
 				ImportStateVerify: true,
 				// This is not normally necessary, but is here because this
 				// example code does not have an actual upstream service.
 				// Once the Read method is able to refresh information from
 				// the upstream service, this can be removed.
-				ImportStateVerifyIgnore: []string{"configurable_attribute"},
+				ImportStateVerifyIgnore: []string{"template"},
 			},
 			// Update and Read testing
 			{
-				Config: testAccExampleResourceConfig("two"),
+				Config: testAccAdminUploadMappingResourceConfig("https://example.org/images/"),
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("scaffolding_example.test", "configurable_attribute", "two"),
+					resource.TestCheckResourceAttr(
+						"cloudinary_admin_upload_mapping.test",
+						"template",
+						"https://example.org/images/",
+					),
 				),
 			},
 			// Delete testing automatically occurs in TestCase
@@ -43,10 +51,11 @@ func TestAccExampleResource(t *testing.T) {
 	})
 }
 
-func testAccExampleResourceConfig(configurableAttribute string) string {
+func testAccAdminUploadMappingResourceConfig(template string) string {
 	return fmt.Sprintf(`
-resource "scaffolding_example" "test" {
-  configurable_attribute = %[1]q
+resource "cloudinary_admin_upload_mapping" "test" {
+  folder   = "example"
+	template = %[1]q
 }
-`, configurableAttribute)
+`, template)
 }
