@@ -29,9 +29,10 @@ type provider struct {
 
 // providerData can be used to store data from the Terraform configuration.
 type providerData struct {
-	APIKey    types.String `tfsdk:"api_key"`
-	APISecret types.String `tfsdk:"api_secret"`
-	CloudName types.String `tfsdk:"cloud_name"`
+	APIKey        types.String `tfsdk:"api_key"`
+	APISecret     types.String `tfsdk:"api_secret"`
+	CloudName     types.String `tfsdk:"cloud_name"`
+	CloudinaryURL types.String `tfsdk:"cloudinary_url"`
 }
 
 func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderRequest, resp *tfsdk.ConfigureProviderResponse) {
@@ -59,15 +60,6 @@ func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderReq
 		cloud = data.CloudName.Value
 	}
 
-	if cloud == "" {
-		// Error vs warning - empty value must stop execution
-		resp.Diagnostics.AddError(
-			"Unable to find cloud_name",
-			"Cloud name cannot be an empty string",
-		)
-		return
-	}
-
 	var key string
 	if data.APIKey.Unknown {
 		// Cannot connect to client with an unknown value
@@ -82,15 +74,6 @@ func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderReq
 		key = os.Getenv("CLOUDINARY_API_KEY")
 	} else {
 		key = data.APIKey.Value
-	}
-
-	if key == "" {
-		// Error vs warning - empty value must stop execution
-		resp.Diagnostics.AddError(
-			"Unable to find api_key",
-			"API Key cannot be an empty string",
-		)
-		return
 	}
 
 	var secret string
@@ -109,16 +92,27 @@ func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderReq
 		secret = data.APISecret.Value
 	}
 
-	if secret == "" {
-		// Error vs warning - empty value must stop execution
-		resp.Diagnostics.AddError(
-			"Unable to find api_secret",
-			"API Secret cannot be an empty string",
+	var cldURL string
+	if data.CloudinaryURL.Unknown {
+		// Cannot connect to client with an unknown value
+		resp.Diagnostics.AddWarning(
+			"Unable to create client",
+			"Cannot use unknown value as cloudinary_url",
 		)
 		return
 	}
 
-	c, err := cloudinary.NewFromParams(cloud, key, secret)
+	if data.CloudinaryURL.Null {
+		cldURL = os.Getenv("CLOUDINARY_URL")
+
+		if cldURL == "" && cloud != "" && key != "" && secret != "" {
+			cldURL = fmt.Sprintf("cloudinary://%s:%s@%s", key, secret, cloud)
+		}
+	} else {
+		cldURL = data.CloudinaryURL.Value
+	}
+
+	cld, err := cloudinary.NewFromURL(cldURL)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Unable to create client",
@@ -128,7 +122,7 @@ func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderReq
 		return
 	}
 
-	p.client = c
+	p.client = cld
 	p.configured = true
 }
 
@@ -163,6 +157,12 @@ func (p *provider) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostic
 				Computed: true,
 				Optional: true,
 				Type:     types.StringType,
+			},
+			"cloudinary_url": {
+				Computed:  true,
+				Optional:  true,
+				Sensitive: true,
+				Type:      types.StringType,
 			},
 		},
 	}, nil
