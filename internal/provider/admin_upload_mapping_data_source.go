@@ -70,17 +70,24 @@ func (d adminUploadMappingDataSource) Read(ctx context.Context, req tfsdk.ReadDa
 		Folder: data.Folder.Value,
 	}
 
-	result, err := d.provider.client.Admin.GetUploadMapping(ctx, params)
+	res, err := d.provider.client.Admin.GetUploadMapping(ctx, params)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Client Error",
 			fmt.Sprintf("Unable to read upload mapping, got error: %s", err),
 		)
-
 		return
 	}
 
-	data.Template = types.String{Value: result.Template}
+	if res.Error.Message != "" {
+		resp.Diagnostics.AddError(
+			"Client Error",
+			fmt.Sprintf("Unable to create upload mapping, got error: %s", res.Error.Message),
+		)
+		return
+	}
+
+	data.Template = types.String{Value: res.Template}
 
 	diags = resp.State.Set(ctx, &data)
 	resp.Diagnostics.Append(diags...)

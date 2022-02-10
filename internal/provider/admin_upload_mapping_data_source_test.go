@@ -15,7 +15,7 @@ func TestAccAdminUploadMappingDataSource(t *testing.T) {
 			{
 				Config: testAccAdminUploadMappingDataSourceConfig,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.cloudinary_admin_upload_mapping.test", "folder", "example"),
+					resource.TestCheckResourceAttr("data.cloudinary_admin_upload_mapping.test", "folder", "example-data"),
 				),
 			},
 		},
@@ -24,6 +24,6 @@ func TestAccAdminUploadMappingDataSource(t *testing.T) {
 
 const testAccAdminUploadMappingDataSourceConfig = `
 data "cloudinary_admin_upload_mapping" "test" {
-  folder = "example"
+  folder = "example-data"
 }
 `
