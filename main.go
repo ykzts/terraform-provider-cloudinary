@@ -29,7 +29,6 @@ var (
 
 func main() {
 	opts := tfsdk.ServeOpts{
-		// TODO: Update this string with the published name of your provider.
 		Name: "registry.terraform.io/ykzts/cloudinary",
 	}
 
