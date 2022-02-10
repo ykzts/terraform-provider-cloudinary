@@ -73,13 +73,20 @@ func (r adminUploadMappingResource) Create(ctx context.Context, req tfsdk.Create
 		Template: data.Template.Value,
 	}
 
-	_, err := r.provider.client.Admin.CreateUploadMapping(ctx, params)
+	res, err := r.provider.client.Admin.CreateUploadMapping(ctx, params)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Client Error",
 			fmt.Sprintf("Unable to create upload mapping, got error: %s", err),
 		)
+		return
+	}
 
+	if res.Error.Message != "" {
+		resp.Diagnostics.AddError(
+			"Client Error",
+			fmt.Sprintf("Unable to create upload mapping, got error: %s", res.Error.Message),
+		)
 		return
 	}
 
@@ -108,17 +115,24 @@ func (r adminUploadMappingResource) Read(ctx context.Context, req tfsdk.ReadReso
 		Folder: data.Folder.Value,
 	}
 
-	result, err := r.provider.client.Admin.GetUploadMapping(ctx, params)
+	res, err := r.provider.client.Admin.GetUploadMapping(ctx, params)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Client Error",
 			fmt.Sprintf("Unable to read upload mapping, got error: %s", err),
 		)
-
 		return
 	}
 
-	data.Template = types.String{Value: result.Template}
+	if res.Error.Message != "" {
+		resp.Diagnostics.AddError(
+			"Client Error",
+			fmt.Sprintf("Unable to read upload mapping, got error: %s", res.Error.Message),
+		)
+		return
+	}
+
+	data.Template = types.String{Value: res.Template}
 
 	diags = resp.State.Set(ctx, &data)
 	resp.Diagnostics.Append(diags...)
@@ -141,13 +155,20 @@ func (r adminUploadMappingResource) Update(ctx context.Context, req tfsdk.Update
 		Template: data.Template.Value,
 	}
 
-	_, err := r.provider.client.Admin.UpdateUploadMapping(ctx, params)
+	res, err := r.provider.client.Admin.UpdateUploadMapping(ctx, params)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Client Error",
 			fmt.Sprintf("Unable to update upload mapping, got error: %s", err),
 		)
+		return
+	}
 
+	if res.Error.Message != "" {
+		resp.Diagnostics.AddError(
+			"Client Error",
+			fmt.Sprintf("Unable to update upload mapping, got error: %s", res.Error.Message),
+		)
 		return
 	}
 
@@ -171,13 +192,20 @@ func (r adminUploadMappingResource) Delete(ctx context.Context, req tfsdk.Delete
 		Folder: data.Folder.Value,
 	}
 
-	_, err := r.provider.client.Admin.DeleteUploadMapping(ctx, params)
+	res, err := r.provider.client.Admin.DeleteUploadMapping(ctx, params)
 	if err != nil {
 		resp.Diagnostics.AddError(
 			"Client Error",
-			fmt.Sprintf("Unable to create delete mapping, got error: %s", err),
+			fmt.Sprintf("Unable to delete upload mapping, got error: %s", err),
 		)
+		return
+	}
 
+	if res.Error.Message != "" {
+		resp.Diagnostics.AddError(
+			"Client Error",
+			fmt.Sprintf("Unable to delete upload mapping, got error: %s", res.Error.Message),
+		)
 		return
 	}
 

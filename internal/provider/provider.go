@@ -118,7 +118,6 @@ func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderReq
 			"Unable to create client",
 			"Unable to create cloudinary client:\n\n"+err.Error(),
 		)
-
 		return
 	}
 
