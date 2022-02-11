@@ -31,4 +31,10 @@ resource "cloudinary_admin_upload_mapping" "example" {
 
 - **id** (String) The ID of this resource.
 
+## Import
 
+Import is supported using the following syntax:
+
+```shell
+terraform import cloudinary_admin_upload_mapping.example images
+```

@@ -1,0 +1,1 @@
+terraform import cloudinary_admin_upload_mapping.example images
