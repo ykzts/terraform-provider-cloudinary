@@ -1,3 +1,1 @@
-## 0.1.0 (Unreleased)
-
-FEATURES:
+see https://github.com/ykzts/terraform-provider-cloudinary/releases
