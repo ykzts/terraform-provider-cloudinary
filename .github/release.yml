@@ -13,3 +13,4 @@ changelog:
     labels:
       - dependencies 
       - documentation
+      - internal
