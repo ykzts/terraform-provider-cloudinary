@@ -29,5 +29,3 @@ data "cloudinary_admin_upload_mapping" "example" {
 
 - **id** (String) The ID of this resource.
 - **template** (String) The URL to be mapped to the folder.
-
-

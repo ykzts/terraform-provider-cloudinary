@@ -82,7 +82,7 @@ func (d adminUploadMappingDataSource) Read(ctx context.Context, req tfsdk.ReadDa
 	if res.Error.Message != "" {
 		resp.Diagnostics.AddError(
 			"Client Error",
-			fmt.Sprintf("Unable to create upload mapping, got error: %s", res.Error.Message),
+			fmt.Sprintf("Unable to read upload mapping, got error: %s", res.Error.Message),
 		)
 		return
 	}
