@@ -134,6 +134,7 @@ func (p *provider) GetResources(ctx context.Context) (map[string]tfsdk.ResourceT
 func (p *provider) GetDataSources(ctx context.Context) (map[string]tfsdk.DataSourceType, diag.Diagnostics) {
 	return map[string]tfsdk.DataSourceType{
 		"cloudinary_admin_upload_mapping": adminUploadMappingDataSourceType{},
+		"cloudinary_admin_usage":          adminUsageDataSourceType{},
 	}, nil
 }
 
