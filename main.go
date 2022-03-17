@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"log"
 
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
@@ -28,8 +29,14 @@ var (
 )
 
 func main() {
+	var debug bool
+
+	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")
+	flag.Parse()
+
 	opts := tfsdk.ServeOpts{
-		Name: "registry.terraform.io/ykzts/cloudinary",
+		Debug: debug,
+		Name:  "registry.terraform.io/ykzts/cloudinary",
 	}
 
 	err := tfsdk.Serve(context.Background(), provider.New(version), opts)
