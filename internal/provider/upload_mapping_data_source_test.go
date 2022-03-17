@@ -6,24 +6,24 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccAdminUploadMappingDataSource(t *testing.T) {
+func TestAccUploadMappingDataSource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Read testing
 			{
-				Config: testAccAdminUploadMappingDataSourceConfig,
+				Config: testAccUploadMappingDataSourceConfig,
 				Check: resource.ComposeAggregateTestCheckFunc(
-					resource.TestCheckResourceAttr("data.cloudinary_admin_upload_mapping.test", "folder", "example-data"),
+					resource.TestCheckResourceAttr("data.cloudinary_upload_mapping.test", "folder", "example-data"),
 				),
 			},
 		},
 	})
 }
 
-const testAccAdminUploadMappingDataSourceConfig = `
-data "cloudinary_admin_upload_mapping" "test" {
+const testAccUploadMappingDataSourceConfig = `
+data "cloudinary_upload_mapping" "test" {
   folder = "example-data"
 }
 `

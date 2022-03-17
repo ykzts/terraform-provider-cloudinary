@@ -12,9 +12,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-type adminUploadMappingResourceType struct{}
+type uploadMappingResourceType struct{}
 
-func (t adminUploadMappingResourceType) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
+func (t uploadMappingResourceType) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
 		// This description is used by the documentation generator and the language server.
 		MarkdownDescription: "Upload Mapping resource.",
@@ -38,26 +38,26 @@ func (t adminUploadMappingResourceType) GetSchema(ctx context.Context) (tfsdk.Sc
 	}, nil
 }
 
-func (t adminUploadMappingResourceType) NewResource(ctx context.Context, in tfsdk.Provider) (tfsdk.Resource, diag.Diagnostics) {
+func (t uploadMappingResourceType) NewResource(ctx context.Context, in tfsdk.Provider) (tfsdk.Resource, diag.Diagnostics) {
 	provider, diags := convertProviderType(in)
 
-	return adminUploadMappingResource{
+	return uploadMappingResource{
 		provider: provider,
 	}, diags
 }
 
-type adminUploadMappingResourceData struct {
+type uploadMappingResourceData struct {
 	Folder   types.String `tfsdk:"folder"`
 	ID       types.String `tfsdk:"id"`
 	Template types.String `tfsdk:"template"`
 }
 
-type adminUploadMappingResource struct {
+type uploadMappingResource struct {
 	provider provider
 }
 
-func (r adminUploadMappingResource) Create(ctx context.Context, req tfsdk.CreateResourceRequest, resp *tfsdk.CreateResourceResponse) {
-	var data adminUploadMappingResourceData
+func (r uploadMappingResource) Create(ctx context.Context, req tfsdk.CreateResourceRequest, resp *tfsdk.CreateResourceResponse) {
+	var data uploadMappingResourceData
 
 	diags := req.Config.Get(ctx, &data)
 	resp.Diagnostics.Append(diags...)
@@ -99,8 +99,8 @@ func (r adminUploadMappingResource) Create(ctx context.Context, req tfsdk.Create
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r adminUploadMappingResource) Read(ctx context.Context, req tfsdk.ReadResourceRequest, resp *tfsdk.ReadResourceResponse) {
-	var data adminUploadMappingResourceData
+func (r uploadMappingResource) Read(ctx context.Context, req tfsdk.ReadResourceRequest, resp *tfsdk.ReadResourceResponse) {
+	var data uploadMappingResourceData
 
 	diags := req.State.Get(ctx, &data)
 	resp.Diagnostics.Append(diags...)
@@ -138,8 +138,8 @@ func (r adminUploadMappingResource) Read(ctx context.Context, req tfsdk.ReadReso
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r adminUploadMappingResource) Update(ctx context.Context, req tfsdk.UpdateResourceRequest, resp *tfsdk.UpdateResourceResponse) {
-	var data adminUploadMappingResourceData
+func (r uploadMappingResource) Update(ctx context.Context, req tfsdk.UpdateResourceRequest, resp *tfsdk.UpdateResourceResponse) {
+	var data uploadMappingResourceData
 
 	diags := req.Plan.Get(ctx, &data)
 	resp.Diagnostics.Append(diags...)
@@ -176,8 +176,8 @@ func (r adminUploadMappingResource) Update(ctx context.Context, req tfsdk.Update
 	resp.Diagnostics.Append(diags...)
 }
 
-func (r adminUploadMappingResource) Delete(ctx context.Context, req tfsdk.DeleteResourceRequest, resp *tfsdk.DeleteResourceResponse) {
-	var data adminUploadMappingResourceData
+func (r uploadMappingResource) Delete(ctx context.Context, req tfsdk.DeleteResourceRequest, resp *tfsdk.DeleteResourceResponse) {
+	var data uploadMappingResourceData
 
 	diags := req.State.Get(ctx, &data)
 	resp.Diagnostics.Append(diags...)
@@ -212,6 +212,6 @@ func (r adminUploadMappingResource) Delete(ctx context.Context, req tfsdk.Delete
 	resp.State.RemoveResource(ctx)
 }
 
-func (r adminUploadMappingResource) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
+func (r uploadMappingResource) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
 	tfsdk.ResourceImportStatePassthroughID(ctx, tftypes.NewAttributePath().WithAttributeName("folder"), req, resp)
 }

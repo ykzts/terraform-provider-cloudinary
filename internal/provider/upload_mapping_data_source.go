@@ -10,9 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type adminUploadMappingDataSourceType struct{}
+type uploadMappingDataSourceType struct{}
 
-func (t adminUploadMappingDataSourceType) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
+func (t uploadMappingDataSourceType) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
 		// This description is used by the documentation generator and the language server.
 		MarkdownDescription: "Upload mapping data source.",
@@ -36,26 +36,26 @@ func (t adminUploadMappingDataSourceType) GetSchema(ctx context.Context) (tfsdk.
 	}, nil
 }
 
-func (t adminUploadMappingDataSourceType) NewDataSource(ctx context.Context, in tfsdk.Provider) (tfsdk.DataSource, diag.Diagnostics) {
+func (t uploadMappingDataSourceType) NewDataSource(ctx context.Context, in tfsdk.Provider) (tfsdk.DataSource, diag.Diagnostics) {
 	provider, diags := convertProviderType(in)
 
-	return adminUploadMappingDataSource{
+	return uploadMappingDataSource{
 		provider: provider,
 	}, diags
 }
 
-type adminUploadMappingDataSourceData struct {
+type uploadMappingDataSourceData struct {
 	Folder   types.String `tfsdk:"folder"`
 	ID       types.String `tfsdk:"id"`
 	Template types.String `tfsdk:"template"`
 }
 
-type adminUploadMappingDataSource struct {
+type uploadMappingDataSource struct {
 	provider provider
 }
 
-func (d adminUploadMappingDataSource) Read(ctx context.Context, req tfsdk.ReadDataSourceRequest, resp *tfsdk.ReadDataSourceResponse) {
-	var data adminUploadMappingDataSourceData
+func (d uploadMappingDataSource) Read(ctx context.Context, req tfsdk.ReadDataSourceRequest, resp *tfsdk.ReadDataSourceResponse) {
+	var data uploadMappingDataSourceData
 
 	diags := req.Config.Get(ctx, &data)
 	resp.Diagnostics.Append(diags...)
