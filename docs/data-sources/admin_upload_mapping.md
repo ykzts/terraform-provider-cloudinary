@@ -23,9 +23,9 @@ data "cloudinary_admin_upload_mapping" "example" {
 
 ### Required
 
-- **folder** (String) The name of the folder.
+- `folder` (String) The name of the folder.
 
 ### Read-Only
 
-- **id** (String) The ID of this resource.
-- **template** (String) The URL to be mapped to the folder.
+- `id` (String) The ID of this resource.
+- `template` (String) The URL to be mapped to the folder.

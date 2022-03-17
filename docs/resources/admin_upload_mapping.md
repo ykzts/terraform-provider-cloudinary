@@ -24,12 +24,12 @@ resource "cloudinary_admin_upload_mapping" "example" {
 
 ### Required
 
-- **folder** (String) The name of the folder.
-- **template** (String) The URL to be mapped to the folder.
+- `folder` (String) The name of the folder.
+- `template` (String) The URL to be mapped to the folder.
 
 ### Read-Only
 
-- **id** (String) The ID of this resource.
+- `id` (String) The ID of this resource.
 
 ## Import
 
