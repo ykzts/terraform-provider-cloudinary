@@ -127,14 +127,14 @@ func (p *provider) Configure(ctx context.Context, req tfsdk.ConfigureProviderReq
 
 func (p *provider) GetResources(ctx context.Context) (map[string]tfsdk.ResourceType, diag.Diagnostics) {
 	return map[string]tfsdk.ResourceType{
-		"cloudinary_admin_upload_mapping": adminUploadMappingResourceType{},
+		"cloudinary_upload_mapping": uploadMappingResourceType{},
 	}, nil
 }
 
 func (p *provider) GetDataSources(ctx context.Context) (map[string]tfsdk.DataSourceType, diag.Diagnostics) {
 	return map[string]tfsdk.DataSourceType{
-		"cloudinary_admin_upload_mapping": adminUploadMappingDataSourceType{},
-		"cloudinary_admin_usage":          adminUsageDataSourceType{},
+		"cloudinary_upload_mapping": uploadMappingDataSourceType{},
+		"cloudinary_usage":          usageDataSourceType{},
 	}, nil
 }
 

@@ -10,9 +10,9 @@ import (
 	"github.com/hashicorp/terraform-plugin-framework/types"
 )
 
-type adminUsageDataSourceType struct{}
+type usageDataSourceType struct{}
 
-func (t adminUsageDataSourceType) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
+func (t usageDataSourceType) GetSchema(ctx context.Context) (tfsdk.Schema, diag.Diagnostics) {
 	return tfsdk.Schema{
 		// This description is used by the documentation generator and the language server.
 		MarkdownDescription: "Usage data source.",
@@ -149,21 +149,21 @@ func (t adminUsageDataSourceType) GetSchema(ctx context.Context) (tfsdk.Schema, 
 	}, nil
 }
 
-func (t adminUsageDataSourceType) NewDataSource(ctx context.Context, in tfsdk.Provider) (tfsdk.DataSource, diag.Diagnostics) {
+func (t usageDataSourceType) NewDataSource(ctx context.Context, in tfsdk.Provider) (tfsdk.DataSource, diag.Diagnostics) {
 	provider, diags := convertProviderType(in)
 
-	return adminUsageDataSource{
+	return usageDataSource{
 		provider: provider,
 	}, diags
 }
 
-type adminUsageUsageData struct {
+type usageUsageData struct {
 	Limit       types.Int64   `tfsdk:"limit"`
 	Usage       types.Int64   `tfsdk:"usage"`
 	UsedPercent types.Float64 `tfsdk:"used_percent"`
 }
 
-type adminUsageMediaLimitsData struct {
+type usageMediaLimitsData struct {
 	AssetMaxTotalPx   types.Int64 `tfsdk:"asset_max_total_px"`
 	ImageMaxPx        types.Int64 `tfsdk:"image_max_px"`
 	ImageMaxSizeBytes types.Int64 `tfsdk:"image_max_size_bytes"`
@@ -171,26 +171,26 @@ type adminUsageMediaLimitsData struct {
 	VideoMaxSizeBytes types.Int64 `tfsdk:"video_max_size_bytes"`
 }
 
-type adminUsageDataSourceData struct {
-	Bandwidth        adminUsageUsageData       `tfsdk:"bandwidth"`
-	DerivedResources types.Int64               `tfsdk:"derived_resources"`
-	ID               types.String              `tfsdk:"id"`
-	LastUpdated      types.String              `tfsdk:"last_updated"`
-	MediaLimits      adminUsageMediaLimitsData `tfsdk:"media_limits"`
-	Objects          adminUsageUsageData       `tfsdk:"objects"`
-	Plan             types.String              `tfsdk:"plan"`
-	Requests         types.Int64               `tfsdk:"requests"`
-	Resources        types.Int64               `tfsdk:"resources"`
-	Storage          adminUsageUsageData       `tfsdk:"storage"`
-	Transformations  adminUsageUsageData       `tfsdk:"transformations"`
+type usageDataSourceData struct {
+	Bandwidth        usageUsageData       `tfsdk:"bandwidth"`
+	DerivedResources types.Int64          `tfsdk:"derived_resources"`
+	ID               types.String         `tfsdk:"id"`
+	LastUpdated      types.String         `tfsdk:"last_updated"`
+	MediaLimits      usageMediaLimitsData `tfsdk:"media_limits"`
+	Objects          usageUsageData       `tfsdk:"objects"`
+	Plan             types.String         `tfsdk:"plan"`
+	Requests         types.Int64          `tfsdk:"requests"`
+	Resources        types.Int64          `tfsdk:"resources"`
+	Storage          usageUsageData       `tfsdk:"storage"`
+	Transformations  usageUsageData       `tfsdk:"transformations"`
 }
 
-type adminUsageDataSource struct {
+type usageDataSource struct {
 	provider provider
 }
 
-func (d adminUsageDataSource) Read(ctx context.Context, req tfsdk.ReadDataSourceRequest, resp *tfsdk.ReadDataSourceResponse) {
-	var data adminUsageDataSourceData
+func (d usageDataSource) Read(ctx context.Context, req tfsdk.ReadDataSourceRequest, resp *tfsdk.ReadDataSourceResponse) {
+	var data usageDataSourceData
 
 	params := admin.UsageParams{}
 

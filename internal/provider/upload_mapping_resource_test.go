@@ -7,26 +7,26 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
-func TestAccAdminUploadMappingResource(t *testing.T) {
+func TestAccUploadMappingResource(t *testing.T) {
 	resource.Test(t, resource.TestCase{
 		PreCheck:                 func() { testAccPreCheck(t) },
 		ProtoV6ProviderFactories: testAccProtoV6ProviderFactories,
 		Steps: []resource.TestStep{
 			// Create and Read testing
 			{
-				Config: testAccAdminUploadMappingResourceConfig("https://example.com/images/"),
+				Config: testAccUploadMappingResourceConfig("https://example.com/images/"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"cloudinary_admin_upload_mapping.test",
+						"cloudinary_upload_mapping.test",
 						"template",
 						"https://example.com/images/",
 					),
-					resource.TestCheckResourceAttr("cloudinary_admin_upload_mapping.test", "folder", "example"),
+					resource.TestCheckResourceAttr("cloudinary_upload_mapping.test", "folder", "example"),
 				),
 			},
 			// ImportState testing
 			{
-				ResourceName:      "cloudinary_admin_upload_mapping.test",
+				ResourceName:      "cloudinary_upload_mapping.test",
 				ImportState:       true,
 				ImportStateVerify: true,
 				// This is not normally necessary, but is here because this
@@ -37,10 +37,10 @@ func TestAccAdminUploadMappingResource(t *testing.T) {
 			},
 			// Update and Read testing
 			{
-				Config: testAccAdminUploadMappingResourceConfig("https://example.org/images/"),
+				Config: testAccUploadMappingResourceConfig("https://example.org/images/"),
 				Check: resource.ComposeAggregateTestCheckFunc(
 					resource.TestCheckResourceAttr(
-						"cloudinary_admin_upload_mapping.test",
+						"cloudinary_upload_mapping.test",
 						"template",
 						"https://example.org/images/",
 					),
@@ -51,9 +51,9 @@ func TestAccAdminUploadMappingResource(t *testing.T) {
 	})
 }
 
-func testAccAdminUploadMappingResourceConfig(template string) string {
+func testAccUploadMappingResourceConfig(template string) string {
 	return fmt.Sprintf(`
-resource "cloudinary_admin_upload_mapping" "test" {
+resource "cloudinary_upload_mapping" "test" {
   folder   = "example"
 	template = %[1]q
 }
