@@ -21,26 +21,26 @@ data "cloudinary_admin_usage" "yesterday" {}
 
 ### Read-Only
 
-- **bandwidth** (Attributes) (see [below for nested schema](#nestedatt--bandwidth))
-- **derived_resources** (Number)
-- **id** (String) The ID of this resource.
-- **last_updated** (String)
-- **media_limits** (Attributes) (see [below for nested schema](#nestedatt--media_limits))
-- **objects** (Attributes) (see [below for nested schema](#nestedatt--objects))
-- **plan** (String)
-- **requests** (Number)
-- **resources** (Number)
-- **storage** (Attributes) (see [below for nested schema](#nestedatt--storage))
-- **transformations** (Attributes) (see [below for nested schema](#nestedatt--transformations))
+- `bandwidth` (Attributes) (see [below for nested schema](#nestedatt--bandwidth))
+- `derived_resources` (Number)
+- `id` (String) The ID of this resource.
+- `last_updated` (String)
+- `media_limits` (Attributes) (see [below for nested schema](#nestedatt--media_limits))
+- `objects` (Attributes) (see [below for nested schema](#nestedatt--objects))
+- `plan` (String)
+- `requests` (Number)
+- `resources` (Number)
+- `storage` (Attributes) (see [below for nested schema](#nestedatt--storage))
+- `transformations` (Attributes) (see [below for nested schema](#nestedatt--transformations))
 
 <a id="nestedatt--bandwidth"></a>
 ### Nested Schema for `bandwidth`
 
 Read-Only:
 
-- **limit** (Number)
-- **usage** (Number)
-- **used_percent** (Number)
+- `limit` (Number)
+- `usage` (Number)
+- `used_percent` (Number)
 
 
 <a id="nestedatt--media_limits"></a>
@@ -48,11 +48,11 @@ Read-Only:
 
 Read-Only:
 
-- **asset_max_total_px** (Number)
-- **image_max_px** (Number)
-- **image_max_size_bytes** (Number)
-- **raw_max_size_bytes** (Number)
-- **video_max_size_bytes** (Number)
+- `asset_max_total_px` (Number)
+- `image_max_px` (Number)
+- `image_max_size_bytes` (Number)
+- `raw_max_size_bytes` (Number)
+- `video_max_size_bytes` (Number)
 
 
 <a id="nestedatt--objects"></a>
@@ -60,9 +60,9 @@ Read-Only:
 
 Read-Only:
 
-- **limit** (Number)
-- **usage** (Number)
-- **used_percent** (Number)
+- `limit` (Number)
+- `usage` (Number)
+- `used_percent` (Number)
 
 
 <a id="nestedatt--storage"></a>
@@ -70,9 +70,9 @@ Read-Only:
 
 Read-Only:
 
-- **limit** (Number)
-- **usage** (Number)
-- **used_percent** (Number)
+- `limit` (Number)
+- `usage` (Number)
+- `used_percent` (Number)
 
 
 <a id="nestedatt--transformations"></a>
@@ -80,6 +80,6 @@ Read-Only:
 
 Read-Only:
 
-- **limit** (Number)
-- **usage** (Number)
-- **used_percent** (Number)
+- `limit` (Number)
+- `usage` (Number)
+- `used_percent` (Number)

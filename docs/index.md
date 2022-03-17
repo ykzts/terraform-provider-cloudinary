@@ -25,7 +25,7 @@ provider "cloudinary" {
 
 ### Optional
 
-- **api_key** (String, Sensitive)
-- **api_secret** (String, Sensitive)
-- **cloud_name** (String)
-- **cloudinary_url** (String, Sensitive)
+- `api_key` (String, Sensitive)
+- `api_secret` (String, Sensitive)
+- `cloud_name` (String)
+- `cloudinary_url` (String, Sensitive)
