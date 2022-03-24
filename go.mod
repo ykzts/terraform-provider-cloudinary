@@ -3,7 +3,7 @@ module github.com/ykzts/terraform-provider-cloudinary
 go 1.17
 
 require (
-	github.com/cloudinary/cloudinary-go v1.6.0
+	github.com/cloudinary/cloudinary-go v1.7.0
 	github.com/hashicorp/terraform-plugin-docs v0.7.0
 	github.com/hashicorp/terraform-plugin-framework v0.6.0
 	github.com/hashicorp/terraform-plugin-go v0.8.0
