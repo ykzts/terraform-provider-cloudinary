@@ -5,7 +5,7 @@ import (
 	"flag"
 	"log"
 
-	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
+	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/ykzts/terraform-provider-cloudinary/internal/provider"
 )
 
@@ -34,12 +34,12 @@ func main() {
 	flag.BoolVar(&debug, "debug", false, "set to true to run the provider with support for debuggers like delve")
 	flag.Parse()
 
-	opts := tfsdk.ServeOpts{
-		Debug: debug,
-		Name:  "registry.terraform.io/ykzts/cloudinary",
+	opts := providerserver.ServeOpts{
+		Address: "registry.terraform.io/ykzts/cloudinary",
+		Debug:   debug,
 	}
 
-	err := tfsdk.Serve(context.Background(), provider.New(version), opts)
+	err := providerserver.Serve(context.Background(), provider.New(version), opts)
 
 	if err != nil {
 		log.Fatal(err.Error())

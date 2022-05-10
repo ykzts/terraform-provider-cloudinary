@@ -208,8 +208,6 @@ func (r uploadMappingResource) Delete(ctx context.Context, req tfsdk.DeleteResou
 		)
 		return
 	}
-
-	resp.State.RemoveResource(ctx)
 }
 
 func (r uploadMappingResource) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
