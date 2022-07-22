@@ -6,9 +6,9 @@ import (
 
 	"github.com/cloudinary/cloudinary-go/api/admin"
 	"github.com/hashicorp/terraform-plugin-framework/diag"
+	"github.com/hashicorp/terraform-plugin-framework/path"
 	"github.com/hashicorp/terraform-plugin-framework/tfsdk"
 	"github.com/hashicorp/terraform-plugin-framework/types"
-	"github.com/hashicorp/terraform-plugin-go/tftypes"
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
@@ -211,5 +211,5 @@ func (r uploadMappingResource) Delete(ctx context.Context, req tfsdk.DeleteResou
 }
 
 func (r uploadMappingResource) ImportState(ctx context.Context, req tfsdk.ImportResourceStateRequest, resp *tfsdk.ImportResourceStateResponse) {
-	tfsdk.ResourceImportStatePassthroughID(ctx, tftypes.NewAttributePath().WithAttributeName("folder"), req, resp)
+	tfsdk.ResourceImportStatePassthroughID(ctx, path.Root("folder"), req, resp)
 }
